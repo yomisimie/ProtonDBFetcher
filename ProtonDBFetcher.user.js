@@ -11,6 +11,7 @@
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_addStyle
 // @connect      protondb.com
+// @run-at	     document-end
 // ==/UserScript==
 
 (function () {
@@ -148,13 +149,7 @@ function fetchProtonDB() {
     function getGameTitle() {
   const titleElement = document.querySelector('h1#game-title');
   if (titleElement) {
-    // Get text content, excluding the text inside <span> tags
-    const span = titleElement.querySelector('span');
-    if (span) {
-      // Remove the span content
-      span.remove();
-    }
-    return titleElement.textContent.trim(); // Return the cleaned title
+    return [].reduce.call(titleElement.childNodes, function(a, b) { return a + (b.nodeType === 3 ? b.textContent : ''); }, '');
   }
   return "Unknown Title"; // Default if no title found
 }
